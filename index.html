@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RAJIB SPORT BD — Live Sports</title>
+<meta name="description" content="RAJIB SPORT BD — Premium live sports streaming dashboard.">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+<div class="bg"></div>
+<header class="topbar">
+  <a class="brand" href="#"><span>RAJIB</span> SPORT <b>BD</b></a>
+  <nav>
+    <a href="#home">Home</a><a href="#live">Live Sports</a><a href="#channels">Channels</a>
+  </nav>
+  <button class="menu" onclick="document.querySelector('nav').classList.toggle('show')">☰</button>
+</header>
+
+<main id="home">
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow"><i></i> LIVE SPORTS HUB</div>
+    <h1>RAJIB SPORT <em>BD</em></h1>
+    <p>Premium live sports experience with a fast, modern and mobile-first interface.</p>
+    <a class="cta" href="#channels">Explore Channels <span>→</span></a>
+  </div>
+  <div class="hero-orb"><div class="orb-ball">⚽</div><div class="ring r1"></div><div class="ring r2"></div></div>
+</section>
+
+<section id="live" class="player-section">
+  <div class="section-head"><div><span class="kicker">NOW PLAYING</span><h2 id="playingTitle">Select a channel</h2></div><span class="live-pill">● LIVE</span></div>
+  <div class="player-shell">
+    <video id="player" controls playsinline></video>
+    <div id="playerEmpty" class="player-empty"><div>▶</div><strong>Choose a channel to start</strong><span>Your selected live stream will appear here.</span></div>
+  </div>
+  <div class="player-info"><span id="playingGroup">Sports</span><span>RAJIB SPORT BD</span></div>
+</section>
+
+<section id="channels" class="channels">
+  <div class="section-head"><div><span class="kicker">SPORTS CHANNELS</span><h2>Live Channels</h2></div>
+    <div class="tools"><input id="search" placeholder="Search channels..." oninput="render()"><select id="filter" onchange="render()"><option value="all">All Sports</option><option value="Sports">Sports</option></select></div>
+  </div>
+  <div id="grid" class="grid"></div>
+</section>
+</main>
+
+<footer>
+  <div class="footer-brand">RAJIB SPORT <b>BD</b></div>
+  <p>Premium Sports Streaming Experience</p>
+  <small>© 2026 Rajib Sport BD • Developed by Rajib Gandhi Roy</small>
+</footer>
+<script>
+const channels = [{"name": "FIFA Plus English 🏆", "group": "Sports", "url": "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8"}, {"name": "FIFA Plus 🇦🇷 Argentina", "group": "Sports", "url": "https://6c849fb3.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctbXhfRklGQVBsdXNTcGFuaXNoLTFfSExT/playlist.m3u8"}, {"name": "FIFA Plus 🇫🇷 France", "group": "Sports", "url": "https://37b4c228.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWZyX0ZJRkFQbHVzRnJlbmNoX0hMUw/playlist.m3u8"}, {"name": "FIFA Plus 🇩🇪 Germany", "group": "Sports", "url": "https://4397879b.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWRlX0ZJRkFQbHVzR2VybWFuX0hMUw/playlist.m3u8"}, {"name": "FIFA Plus 🇮🇹 Italy", "group": "Sports", "url": "https://5d95f7d7.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWl0X0ZJRkFQbHVzSXRhbGlhbl9ITFM/playlist.m3u8"}, {"name": "FIFA Plus 🇧🇷 Brazil", "group": "Sports", "url": "https://e3be9ac5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYnJfRklGQVBsdXNQb3J0dWd1ZXNlX0hMUw/playlist.m3u8"}, {"name": "FIFA Plus 🇪🇸 Spain", "group": "Sports", "url": "https://d63fabad.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWVzX0ZJRkFQbHVzU3BhbmlzaF9ITFM/playlist.m3u8"}, {"name": "FIFA Plus 🇺🇸 USA", "group": "Sports", "url": "https://d2w9q46ikgrcwx.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-of5cbk3sav3w5/v1/sysdata_s_p_a_fifa_7/samsungheadend_us/latest/main/hls/playlist.m3u8"}, {"name": "Tyc Sports 🇦🇷 Argentina", "group": "Sports", "url": "https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8"}, {"name": "Tyc Sports E 🇦🇷 Argentina", "group": "Sports", "url": "http://wdp.joycalls.com/get"}, {"name": "DSports E 🇦🇷", "group": "Sports", "url": "http://wdp.joycalls.com/get"}, {"name": "Caze TV C 🇧🇷 Brazil", "group": "Sports", "url": "https://otte.live.fly.ww.aiv-cdn.net/gru-nitro/live/clients/dash/enc/3ynrpdanq2/out/v1/81fd4c26584044d2b1a1cc5b32fa9af0/cenc.mpd?amznDtid=AOAGZA014O5RE&encoding=segmentBase"}, {"name": "T Sports HD 🇧🇩 Bangladesh", "group": "Sports", "url": "http://27.124.71.27/T-Sports/index.m3u8"}, {"name": "Bein Sports 1 🇷🇸 Serbia", "group": "Sports", "url": "https://ua101.online24.pm:8443/9999/video.m3u8"}, {"name": "Bein Sports 2 🇷🇸 Serbia", "group": "Sports", "url": "https://ua101.online24.pm:8443/9999/video.m3u8"}, {"name": "TUDN 🇲🇽 Mexico", "group": "Sports", "url": "http://177.10.184.60:8002/play/a013/index.m3u8"}, {"name": "TUDN B 1080 🇲🇽 Mexico", "group": "Sports", "url": "https://streaming.alwaysdata.net/"}, {"name": "Bein Sports 1", "group": "Sports", "url": "http://27.124.71.27/beIN_Sports_1/index.m3u8"}, {"name": "Bein Sports 2", "group": "Sports", "url": "http://27.124.71.27/beIN_Sports_2/index.m3u8"}, {"name": "Bein Sports 3", "group": "Sports", "url": "http://27.124.71.27/beIN_Sports_3/index.m3u8"}, {"name": "Bein Sports 4", "group": "Sports", "url": "https://bein-esp-xumo.amagi.tv/playlistR1080p.m3u8"}, {"name": "beIN Sports Xtra", "group": "Sports", "url": "https://bein-esp-xumo.amagi.tv/playlistR720P.m3u8"}, {"name": "Cricket Gold", "group": "Sports", "url": "https://streams2.sofast.tv/ptnr-yupptv/title-cricketgold/v1/manifest/611d79b11b77e2f571934fd80ca1413453772ac7/b2048bb8-1686-4432-aa50-647245383e0c/bfc6a36e-c250-4afe-b6c9-2bc57855bb7d/4.m3u8"}];
+const grid=document.getElementById('grid'), search=document.getElementById('search'), filter=document.getElementById('filter');
+let hls=null;
+function icon(name){ if(/cricket/i.test(name)) return '🏏'; if(/fifa|tudn|bein|tyc|dsports|caze|tsports/i.test(name)) return '⚽'; return '📺'; }
+function render(){
+ const q=search.value.toLowerCase(), f=filter.value;
+ grid.innerHTML=channels.filter(c=>(f==='all'||c.group===f)&&c.name.toLowerCase().includes(q)).map((c,i)=>`
+ <article class="card" onclick="play(${channels.indexOf(c)})">
+   <div class="card-top"><span class="sport-icon">${icon(c.name)}</span><span class="status">LIVE</span></div>
+   <h3>${c.name}</h3><p>${c.group}</p><button>Watch Live <span>→</span></button>
+ </article>`).join('');
+}
+function play(i){
+ const c=channels[i], video=document.getElementById('player'), empty=document.getElementById('playerEmpty');
+ document.getElementById('playingTitle').textContent=c.name;
+ document.getElementById('playingGroup').textContent=c.group;
+ empty.style.display='none'; video.style.display='block';
+ if(hls){hls.destroy();hls=null;}
+ if(c.url.includes('.m3u8')){
+   if(Hls.isSupported()){hls=new Hls();hls.loadSource(c.url);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));}
+   else {video.src=c.url;video.play().catch(()=>{});}
+ } else {
+   video.src=c.url; video.play().catch(()=>{});
+ }
+ document.getElementById('live').scrollIntoView({behavior:'smooth',block:'start'});
+}
+render();
+</script>
+</body>
+</html>
